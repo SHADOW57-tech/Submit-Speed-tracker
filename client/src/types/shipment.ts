@@ -14,6 +14,7 @@ export interface ShipmentEvent {
 }
 
 export interface Shipment {
+  _id?: string;
   trackingNumber: string;
   status: ShipmentStatus;
   currentLocation: string;

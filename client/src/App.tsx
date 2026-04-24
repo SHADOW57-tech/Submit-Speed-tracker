@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 
 // Components
@@ -8,11 +7,13 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Header from "./components/Header";
 
 // Pages
-import Home from "./pages/Home"; 
-import TrackingResults from "@/pages/TrackingResults"; 
+import Home from "./pages/Home";
+import TrackingResults from "@/pages/TrackingResults";
 import AdminDashboard from "@/pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRegister from "./pages/AdminRegister";
+import UserLogin from "./pages/UserLogin";
+import UserRegister from "./pages/UserRegister";
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
 
           <Route path="/login" element={<AdminLogin />} />
           <Route path="/register" element={<AdminRegister />} />
+
+          <Route path="/user-login" element={<UserLogin />} />
+          <Route path="/user-register" element={<UserRegister />} />
 
           <Route
             path="/admin"

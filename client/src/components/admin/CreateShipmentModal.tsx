@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Globe, User, Truck, Save, Plus, Hash, Calendar, Weight, Info } from 'lucide-react';
-import axios from 'axios';
+import { API } from '@/services/api';
 
 interface Props {
   isOpen: boolean;
@@ -36,8 +36,7 @@ const CreateShipmentModal = ({ isOpen, onClose, onCreated }: Props) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Replace with your actual endpoint
-      await axios.post('http://localhost:5000/api/shipments', formData);
+      await API.post('/shipments', formData);
       onCreated();
       onClose();
     } catch (err) {
@@ -47,7 +46,7 @@ const CreateShipmentModal = ({ isOpen, onClose, onCreated }: Props) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm transition-opacity" 

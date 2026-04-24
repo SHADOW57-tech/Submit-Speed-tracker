@@ -15,16 +15,15 @@ export const addEvent = async (req, res) => {
     };
 
     // Update shipment state
-    shipment.events.unshift(newEvent); 
+    shipment.events.unshift(newEvent);
     shipment.status = req.body.status;
     shipment.currentLocation = req.body.location;
 
     await shipment.save();
 
-    // FIXED: Pass the actual instance data (email, ID, and new status)
     await sendStatusEmail(
-      shipment.recipientEmail, 
-      shipment.trackingId, 
+      shipment.recipientEmail || '',
+      shipment.trackingNumber,
       newEvent.status
     );
 

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 // @desc    Create new shipment (Admin)
 export const createShipment = async (req, res) => {
   try {
-    const trackingNumber = `TRK-${uuidv4().substring(0, 8).toUpperCase()}`;
+    const trackingNumber = req.body.trackingNumber || `TRK-${uuidv4().substring(0, 8).toUpperCase()}`;
     const shipment = await Shipment.create({ ...req.body, trackingNumber });
     res.status(201).json(shipment);
   } catch (error) {

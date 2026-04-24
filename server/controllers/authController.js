@@ -28,19 +28,20 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Register a new admin (First time setup)
+// @desc    Register a new user (Public or Admin)
 // @route   POST /api/auth/register
 export const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
   try {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: 'User already exists' });
 
-    const user = await User.create({ email, password });
+    const user = await User.create({ email, password, role: role || 'User' });
     res.status(201).json({
       _id: user._id,
       email: user.email,
+      role: user.role,
       token: generateToken(user._id),
     });
   } catch (error) {

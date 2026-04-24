@@ -1,12 +1,12 @@
-import express from "express"
+import express from "express";
+import { protect } from "../middleware/authMiddleware.js";
 import { createShipment, deleteShipment, getAllShipments, getAnalytics, getShipmentByTracking } from "../controllers/shipmentController.js";
 const router = express.Router();
 
-
-router.post('/', createShipment);
+router.post('/', protect, createShipment);
+router.get('/stats/analytics', protect, getAnalytics);
+router.get('/', protect, getAllShipments);
 router.get('/:id', getShipmentByTracking);
-router.get('/', getAllShipments);
-router.delete('/:id', deleteShipment);
-router.get('/stats/analytics', getAnalytics)
+router.delete('/:id', protect, deleteShipment);
 
 export default router;

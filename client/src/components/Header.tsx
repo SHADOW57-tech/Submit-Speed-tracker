@@ -1,14 +1,24 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Ship, LayoutDashboard, Search, UserCircle } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Ship, LayoutDashboard, Search, UserCircle, LogOut } from 'lucide-react';
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isAdminPath = location.pathname.startsWith('/admin');
-  const token = localStorage.getItem('adminToken');
+  const token = localStorage.getItem('token');
+  const userInfo = token ? JSON.parse(localStorage.getItem('userInfo') || '{}') : null;
+  const isAdmin = userInfo?.role === 'Admin' || userInfo?.role === 'SuperAdmin';
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('adminInfo');
+    navigate('/');
+  };
 
   return (
-    <nav className="fixed top-0 w-full z-[100] border-b border-zinc-200/10 dark:border-zinc-800/50 bg-white/70 dark:bg-background backdrop-blur-xl">
+    <nav className="fixed top-0 w-full z-100 border-b border-zinc-200/10 dark:border-zinc-800/50 bg-white/70 dark:bg-background backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         
         {/* Logo Section */}
@@ -27,7 +37,7 @@ const Header = () => {
             <Search size={18} /> Track
           </NavLink>
           
-          {token && (
+          {token && isAdmin && (
             <NavLink to="/admin" active={isAdminPath}>
               <LayoutDashboard size={18} /> Terminal
             </NavLink>
@@ -37,16 +47,29 @@ const Header = () => {
         {/* Action Buttons */}
         <div className="flex items-center gap-4">
           {!token ? (
-            <Link 
-              to="/login" 
-              className="px-5 py-2.5 rounded-xl bg-zinc-900 dark:bg-white dark:text-black text-white text-sm font-bold hover:scale-105 transition-all"
-            >
-              Login
-            </Link>
+            <>
+              <Link 
+                to="/user-login" 
+                className="px-5 py-2.5 rounded-xl bg-zinc-900 dark:bg-white dark:text-black text-white text-sm font-bold hover:scale-105 transition-all"
+              >
+                Login
+              </Link>
+              <Link 
+                to="/user-register" 
+                className="px-5 py-2.5 rounded-xl border border-zinc-800 dark:border-zinc-200 text-zinc-900 dark:text-white text-sm font-bold hover:scale-105 transition-all"
+              >
+                Register
+              </Link>
+            </>
           ) : (
             <div className="flex items-center gap-3 pl-4 border-l border-zinc-800">
-              <span className="text-xs font-bold text-zinc-500 hidden lg:block uppercase tracking-widest">Operator</span>
+              <span className="text-xs font-bold text-zinc-500 hidden lg:block uppercase tracking-widest">
+                {isAdmin ? 'Operator' : 'User'}
+              </span>
               <UserCircle className="text-red-600" size={28} />
+              <button onClick={handleLogout} className="text-zinc-500 hover:text-red-600 transition-colors">
+                <LogOut size={20} />
+              </button>
             </div>
           )}
         </div>

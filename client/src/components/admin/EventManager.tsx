@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import { API } from '@/services/api';
 
 interface Props {
   shipmentId: string;
@@ -15,10 +15,7 @@ const EventManager = ({ shipmentId, onUpdate }: Props) => {
 
   const handleAddEvent = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
-      await axios.post(`http://localhost:5000/api/events/${shipmentId}`, event, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await API.post(`/events/${shipmentId}`, event);
       alert('Timeline Updated!');
       onUpdate(); // Refresh the list
     } catch (err) {
