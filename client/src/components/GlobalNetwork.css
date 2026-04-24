@@ -1,0 +1,43 @@
+.network-container {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: radial-gradient(circle at center, #1a0505 0%, #000 100%);
+  z-index: -1;
+  overflow: hidden;
+  opacity: 0.4;
+}
+
+.dark .network-container {
+  opacity: 1;
+}
+
+.grid-overlay {
+  position: absolute;
+  width: 200%; height: 200%;
+  background-image: radial-gradient(rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+  transform: rotateX(60deg) translateY(-20%);
+  animation: drift 20s linear infinite;
+}
+
+.node {
+  position: absolute;
+  width: 8px; height: 8px;
+  background: #ff3333;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #ff3333;
+  animation: pulse 2s infinite;
+}
+
+.path-anim {
+  fill: none;
+  stroke: rgba(255, 51, 51, 0.4);
+  stroke-width: 0.5;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw 3s infinite linear;
+}
+
+@keyframes draw { to { stroke-dashoffset: -100; } }
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(2); opacity: 0.4; } }
+@keyframes drift { from { transform: rotateX(60deg) translateY(0); } to { transform: rotateX(60deg) translateY(-30px); } }

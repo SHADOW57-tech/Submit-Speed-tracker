@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  /* v4 uses the 'variant' for manual dark mode switching */
+  --variant-dark: .dark &;
+  
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-border: hsl(var(--border));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--status-muted));
+  --color-border: hsl(0 0% 92%);
+  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 96%;
+    --foreground: 0 0% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
+    --primary: 355 95% 42%;
+    --primary-foreground: 0 0% 100%;
+    --border: 0 0% 88%;
+    --muted: 0 0% 94%;
+    --status-muted: 0 0% 60%;
+  }
+
+  .card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding: 1.5rem;
+  /* Apply the shadow here */
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+  .dark {
+    /* These variables will now take effect when 'dark' class is on <html> */
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 47% 11%;
+    --border: 217 32% 17%;
+    --color-border: hsl(217 32% 17%);
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+  }
+}
+
+@layer components {
+  .nav-item-active {
+    @apply bg-primary text-primary-foreground shadow-lg;
+  }
+  
+  .card-glass {
+    @apply relative bg-card/20 backdrop-blur-xl border border-border/20 rounded-[24px] shadow-2xl;
+  }
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border-2 transition-all outline-none text-sm;
+    @apply border-zinc-200 bg-white text-zinc-900;
+    @apply placeholder:text-zinc-400;
+
+    @apply dark:border-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-100;
+    @apply dark:placeholder:text-zinc-500;
+
+    @apply focus:border-primary focus:ring-4 focus:ring-primary/10;
+  }
+}
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite; /* Fixed typo */
+  }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
