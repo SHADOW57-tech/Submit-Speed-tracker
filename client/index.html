@@ -17,20 +17,32 @@
 
     <link rel="preload" href="/videos/hero_bg.mp4" as="video" type="video/mp4" />
 
+    <script>
+      // This checks if the user manually set a theme before, 
+      // otherwise it defaults to the system preference.
+      if (
+        localStorage.getItem('theme') === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+
     <style>
       body {
         margin: 0;
-        background-color: #ffffff; 
+        background-color: #ffffff; /* Light mode fallback */
         font-family: 'Inter', sans-serif;
       }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #09090b; 
-        }
+      /* This makes the background match immediately based on the .dark class */
+      html.dark body {
+        background-color: #09090b; 
       }
     </style>
   </head>
-  <body class="antialiased text-slate-900 dark:text-slate-100">
+  <body class="antialiased text-slate-900 dark:text-slate-100 bg-white dark:bg-zinc-950 transition-colors duration-300">
     <div id="root"></div>
     
     <script type="module" src="/src/main.tsx"></script>
