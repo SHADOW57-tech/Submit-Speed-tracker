@@ -1,7 +1,12 @@
 import { useState } from 'react';
-import axios from 'axios';
+import type { FormEvent } from 'react';
+import { API } from '@/services/api';
 
-const ShipmentForm = () => {
+interface ShipmentFormProps {
+  onSuccess?: () => void;
+}
+
+const ShipmentForm = ({ onSuccess }: ShipmentFormProps) => {
   const [formData, setFormData] = useState({
     origin: '',
     destination: '',
@@ -10,13 +15,13 @@ const ShipmentForm = () => {
     serviceType: 'Standard',
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      // Note: In production, you'd send the Admin JWT token in headers
-      const res = await axios.post('http://localhost:5000/api/shipments', formData);
+      const res = await API.post('/shipments', formData);
       alert(`Shipment Created! Tracking Number: ${res.data.trackingNumber}`);
       setFormData({ origin: '', destination: '', recipientName: '', weight: '', serviceType: 'Standard' });
+      onSuccess?.();
     } catch (err) {
       console.error(err);
       alert('Failed to create shipment');

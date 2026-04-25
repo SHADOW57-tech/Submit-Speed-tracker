@@ -1,5 +1,8 @@
 import Shipment from "../models/Shipment.js";
 import { v4 as uuidv4 } from "uuid";
+import mongoose from "mongoose";
+
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // @desc    Create new shipment (Admin)
 export const createShipment = async (req, res) => {
@@ -15,7 +18,15 @@ export const createShipment = async (req, res) => {
 // @desc    Get shipment by tracking number (Public)
 export const getShipmentByTracking = async (req, res) => {
   try {
-    const shipment = await Shipment.findOne({ trackingNumber: req.params.id });
+    const rawTrackingId = String(req.params.id || '').trim();
+    if (!rawTrackingId) return res.status(400).json({ message: 'Invalid tracking identifier' });
+
+    const trackingRegex = new RegExp(`^${escapeRegex(rawTrackingId)}$`, 'i');
+    const query = mongoose.Types.ObjectId.isValid(rawTrackingId)
+      ? { $or: [{ _id: rawTrackingId }, { trackingNumber: trackingRegex }] }
+      : { trackingNumber: trackingRegex };
+
+    const shipment = await Shipment.findOne(query);
     if (!shipment) return res.status(404).json({ message: 'Shipment not found' });
     res.json(shipment);
   } catch (error) {

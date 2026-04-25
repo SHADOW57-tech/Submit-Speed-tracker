@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Search, MapPin, Clock, PackageCheck } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import { API } from "@/services/api";
 
 type Event = {
@@ -94,7 +94,7 @@ const Track = () => {
               <div key={index} className="relative animate-fade-in-up">
 
                 {/* Dot */}
-                <div className="absolute -left-[10px] top-1.5 h-4 w-4 rounded-full bg-primary"></div>
+                <div className="absolute -left-2.5 top-1.5 h-4 w-4 rounded-full bg-primary"></div>
 
                 <div className="bg-background p-4 rounded-lg border border-border shadow-sm">
                   <div className="flex justify-between items-center">

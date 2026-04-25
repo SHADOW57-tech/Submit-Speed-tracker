@@ -1,15 +1,17 @@
-import { type Edit2, Trash2 } from "lucide-react";
-import { StatusBadge } from "@/components/StatusBadge";
-import { type Shipment } from "@/types/shipment";
+import { Edit2, Trash2 } from "lucide-react";
+import StatusBadge from "@/components/StatusBadge";
+import type { Shipment } from "@/types/shipment";
 
 export const ShipmentTable = ({
   shipments,
+  onSelect,
   onEdit,
   onDelete,
 }: {
   shipments: Shipment[];
-  onEdit: (s: Shipment) => void;
-  onDelete: (s: Shipment) => void;
+  onSelect?: (s: Shipment) => void;
+  onEdit?: (s: Shipment) => void;
+  onDelete?: (s: Shipment) => void;
 }) => {
   return (
     <div className="card overflow-hidden">
@@ -25,7 +27,11 @@ export const ShipmentTable = ({
 
         <tbody>
           {shipments.map((s) => (
-            <tr key={s._id} className="border-t hover:bg-muted">
+            <tr
+              key={s._id}
+              className="border-t hover:bg-muted cursor-pointer"
+              onClick={() => onSelect?.(s)}
+            >
               <td className="p-3 font-mono">{s.trackingNumber}</td>
 
               <td className="p-3">
@@ -37,19 +43,23 @@ export const ShipmentTable = ({
               </td>
 
               <td className="p-3 text-right flex gap-2 justify-end">
-                <button
-                  onClick={() => onEdit(s)}
-                  className="p-2 rounded-md hover:bg-muted"
-                >
-                  <Edit2 className="h-4 w-4" />
-                </button>
+                {onEdit && (
+                  <button
+                    onClick={() => onEdit(s)}
+                    className="p-2 rounded-md hover:bg-muted"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </button>
+                )}
 
-                <button
-                  onClick={() => onDelete(s)}
-                  className="p-2 rounded-md hover:bg-red-100 text-red-500"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
+                {onDelete && (
+                  <button
+                    onClick={() => onDelete(s)}
+                    className="p-2 rounded-md hover:bg-red-100 text-red-500"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                )}
               </td>
             </tr>
           ))}

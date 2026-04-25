@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { API } from '@/services/api';
 
+import type { Shipment } from '@/types/shipment';
+
 interface Props {
-  shipmentId: string;
-  onUpdate: () => void;
+  shipment: Shipment;
+  refresh: () => void;
 }
 
-const EventManager = ({ shipmentId, onUpdate }: Props) => {
+const EventManager = ({ shipment, refresh }: Props) => {
   const [event, setEvent] = useState({
     status: 'In Transit',
     location: '',
@@ -15,9 +17,9 @@ const EventManager = ({ shipmentId, onUpdate }: Props) => {
 
   const handleAddEvent = async () => {
     try {
-      await API.post(`/events/${shipmentId}`, event);
+      await API.post(`/events/${shipment._id}`, event);
       alert('Timeline Updated!');
-      onUpdate(); // Refresh the list
+      refresh(); // Refresh the list
     } catch (err) {
       alert('Error updating timeline. Ensure you are logged in as admin.');
     }

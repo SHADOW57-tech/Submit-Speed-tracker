@@ -108,7 +108,7 @@ const Home = () => {
                 className="w-full h-full object-contain p-8"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-6 left-6">
                 <p className="text-white/60 font-mono text-[10px] mb-1 uppercase tracking-tighter">
                   Node_ID: LOS-CENTRAL
@@ -152,7 +152,7 @@ const Home = () => {
 
           <motion.div whileHover={{ y: -5 }} className="relative group">
             {/* Glow effect that uses primary theme color */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-orange-600 rounded-[30px] blur opacity-20 group-hover:opacity-40 transition duration-500" />
+            <div className="absolute -inset-1 bg-linear-to-r from-primary to-orange-600 rounded-[30px] blur opacity-20 group-hover:opacity-40 transition duration-500" />
             <div className="relative bg-card border-2 border-border p-3 rounded-[28px] shadow-2xl flex flex-col md:flex-row items-center gap-2">
               <div className="flex-1 w-full relative">
                 <Globe

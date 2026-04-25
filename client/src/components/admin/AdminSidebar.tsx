@@ -3,17 +3,21 @@ import {
   Package,
   Settings,
   LogOut,
-  Users,
 } from "lucide-react";
 
-const AdminSidebar = () => {
+interface AdminSidebarProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+}
+
+const AdminSidebar = ({ activeTab, onTabChange }: AdminSidebarProps) => {
   return (
-    <div className="w-64 bg-zinc-950 h-screen border-r border-zinc-800 p-6 flex flex-col">
+    <div className="w-64 bg-card h-screen border-r border-border p-6 flex flex-col sticky top-0">
       <div className="mb-10">
-        <h2 className="text-xl font-black text-red-600 tracking-tighter">
-          SUBMIT <span className="text-white">SPEED</span>
+        <h2 className="text-xl font-black text-primary tracking-tighter">
+          SUBMIT <span className="text-foreground">SPEED</span>
         </h2>
-        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
+        <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
           Control Panel
         </p>
       </div>
@@ -22,15 +26,25 @@ const AdminSidebar = () => {
         <NavItem
           icon={<LayoutDashboard size={20} />}
           label="Dashboard"
-          active
+          active={activeTab === "Dashboard"}
+          onClick={() => onTabChange("Dashboard")}
         />
-        <NavItem icon={<Package size={20} />} label="Shipments" />
-        <NavItem icon={<Users size={20} />} label="Customers" />
-        <NavItem icon={<Settings size={20} />} label="Settings" />
+        <NavItem
+          icon={<Package size={20} />}
+          label="Shipments"
+          active={activeTab === "Shipments"}
+          onClick={() => onTabChange("Shipments")}
+        />
+        <NavItem
+          icon={<Settings size={20} />}
+          label="Settings"
+          active={activeTab === "Settings"}
+          onClick={() => onTabChange("Settings")}
+        />
       </nav>
 
-      <div className="pt-6 border-t border-zinc-800">
-        <button className="flex items-center gap-3 text-zinc-500 hover:text-red-500 transition-colors">
+      <div className="pt-6 border-t border-border">
+        <button className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors">
           <LogOut size={20} />
           <span className="font-bold">Logout</span>
         </button>
@@ -39,17 +53,21 @@ const AdminSidebar = () => {
   );
 };
 
-const NavItem = ({
-  icon,
-  label,
-  active = false,
-}: {
+interface NavItemProps {
   icon: any;
   label: string;
   active?: boolean;
-}) => (
+  onClick?: () => void;
+}
+
+const NavItem = ({ icon, label, active = false, onClick }: NavItemProps) => (
   <div
-    className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${active ? "bg-red-600 text-white" : "text-zinc-500 hover:bg-zinc-900 hover:text-white"}`}
+    onClick={onClick}
+    className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${
+      active
+        ? "bg-primary text-primary-foreground"
+        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+    }`}
   >
     {icon}
     <span className="font-medium">{label}</span>

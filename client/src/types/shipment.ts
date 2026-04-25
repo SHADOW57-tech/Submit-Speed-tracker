@@ -4,13 +4,23 @@ export type ShipmentStatus =
   | "Out for Delivery"
   | "Delivered"
   | "Delayed"
-  | "On Hold";
+  | "On Hold"
+  | "Arrived at Hub";
 
 export interface ShipmentEvent {
   status: ShipmentStatus;
   location: string;
   timestamp: string;
   note?: string;
+}
+
+export interface ShipmentUpdate {
+  _id?: string;
+  shipmentId: string;
+  status: ShipmentStatus;
+  location: string;
+  timestamp: string;
+  description: string;
 }
 
 export interface Shipment {
