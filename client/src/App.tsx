@@ -1,4 +1,5 @@
 import { Routes, Route, Link } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 // Components
 import GlobalNetwork from "./components/GlobalNetwork";
@@ -21,6 +22,7 @@ function App() {
       <GlobalNetwork />
       <ThemeToggle />
       <Header />
+      <Toaster position="top-right" />
 
       <div className="pt-20">
         <Routes>

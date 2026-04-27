@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { API } from '@/services/api';
+import toast from 'react-hot-toast';
 
 interface ShipmentFormProps {
   onSuccess?: () => void;
@@ -11,6 +12,8 @@ const ShipmentForm = ({ onSuccess }: ShipmentFormProps) => {
     origin: '',
     destination: '',
     recipientName: '',
+    productName: '',
+    senderName: '',
     weight: '',
     serviceType: 'Standard',
   });
@@ -19,12 +22,12 @@ const ShipmentForm = ({ onSuccess }: ShipmentFormProps) => {
     e.preventDefault();
     try {
       const res = await API.post('/shipments', formData);
-      alert(`Shipment Created! Tracking Number: ${res.data.trackingNumber}`);
-      setFormData({ origin: '', destination: '', recipientName: '', weight: '', serviceType: 'Standard' });
+      toast.success(`Shipment Created! Tracking Number: ${res.data.trackingNumber}`);
+      setFormData({ origin: '', destination: '', recipientName: '', productName: '', senderName: '', weight: '', serviceType: 'Standard' });
       onSuccess?.();
     } catch (err) {
       console.error(err);
-      alert('Failed to create shipment');
+      toast.error('Failed to create shipment');
     }
   };
 
@@ -51,6 +54,18 @@ const ShipmentForm = ({ onSuccess }: ShipmentFormProps) => {
           placeholder="Recipient Name"
           value={formData.recipientName}
           onChange={(e) => setFormData({...formData, recipientName: e.target.value})}
+        />
+        <input 
+          className="bg-black border border-zinc-700 p-3 rounded-lg outline-none focus:border-red-500"
+          placeholder="Product Name (e.g., iPhone 15 Pro)"
+          value={formData.productName}
+          onChange={(e) => setFormData({...formData, productName: e.target.value})}
+        />
+        <input 
+          className="bg-black border border-zinc-700 p-3 rounded-lg outline-none focus:border-red-500"
+          placeholder="Sender Name (e.g., Amazon)"
+          value={formData.senderName}
+          onChange={(e) => setFormData({...formData, senderName: e.target.value})}
         />
         <select 
           className="bg-black border border-zinc-700 p-3 rounded-lg outline-none"

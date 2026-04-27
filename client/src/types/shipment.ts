@@ -34,5 +34,7 @@ export interface Shipment {
   recipientName: string;
   serviceType: string;
   weight: string;
+  productName: string;
+  senderName: string;
   events: ShipmentEvent[];
 }

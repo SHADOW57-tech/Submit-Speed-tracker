@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Globe, User, Truck, Save, Plus, Hash, Calendar, Weight, Info } from 'lucide-react';
 import { API } from '@/services/api';
+import toast from 'react-hot-toast';
 
 interface Props {
   isOpen: boolean;
@@ -35,13 +36,24 @@ const CreateShipmentModal = ({ isOpen, onClose, onCreated }: Props) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error('Admin authentication required. Please log in again.');
+      return;
+    }
+
     try {
-      await API.post('/shipments', formData);
+      await API.post('/shipments', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       onCreated();
       onClose();
-    } catch (err) {
-      console.error("Submission Error:", err);
-      alert("Error initializing shipment record.");
+    } catch (err: any) {
+      console.error("Submission Error:", err.response?.data || err.message || err);
+      toast.error(err.response?.data?.message || "Error initializing shipment record.");
     }
   };
 

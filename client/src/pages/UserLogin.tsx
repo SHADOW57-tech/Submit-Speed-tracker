@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { Lock, Mail, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const UserLogin = () => {
   const [email, setEmail] = useState('');
@@ -22,7 +23,7 @@ const UserLogin = () => {
       navigate('/'); // Redirect to home
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
-      alert(error.response?.data?.message || 'Login failed');
+      toast.error(error.response?.data?.message || 'Login failed');
     } finally {
       setLoading(false);
     }

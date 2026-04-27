@@ -9,6 +9,6 @@ router.get('/:id/updates', getUpdates);
 
 // Protected routes for admin
 router.post('/:id/updates', protect, addUpdate);
-router.delete('/updates/:updateId', protect, deleteUpdate);
+router.delete('/:id/updates/:updateId', protect, deleteUpdate);
 
 export default router;

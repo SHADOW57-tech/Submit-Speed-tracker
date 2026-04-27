@@ -4,19 +4,22 @@ const eventSchema = new mongoose.Schema(
   {
     status: { type: String, required: true },
     location: { type: String, default: '' },
-    note: { type: String, default: '' },
+    description: { type: String, default: '' }, // Changed 'note' to 'description' to match your controller
     timestamp: { type: Date, default: Date.now },
-  },
-  { _id: false }
+  }
+  // REMOVED { _id: false } -> We NEED the _id to delete specific updates!
 );
 
 const shipmentSchema = new mongoose.Schema(
   {
     trackingNumber: { type: String, required: true, unique: true },
+    productName: { type: String, required: true },
+    senderName: { type: String, required: true },
     status: {
       type: String,
       required: true,
-      enum: ['Pending', 'In Transit', 'Delivered', 'On Hold', 'Delayed'],
+      // Ensure these match the options in your frontend dropdown
+      enum: ['Picked Up', 'In Transit', 'Processing', 'Out for Delivery', 'Delivered', 'On Hold', 'Delayed', 'Pending'],
       default: 'Pending',
     },
     origin: { type: String, required: true },
@@ -27,7 +30,8 @@ const shipmentSchema = new mongoose.Schema(
     weight: { type: String, default: '' },
     serviceType: { type: String, default: 'Standard' },
     estimatedDelivery: { type: String, default: '' },
-    events: { type: [eventSchema], default: [] },
+    // Use 'updates' if that's what your controller uses, or update the controller to use 'events'
+    updates: { type: [eventSchema], default: [] }, 
   },
   { timestamps: true }
 );

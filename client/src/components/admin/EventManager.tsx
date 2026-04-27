@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { API } from '@/services/api';
+import toast from 'react-hot-toast';
 
 import type { Shipment } from '@/types/shipment';
 
@@ -18,10 +19,10 @@ const EventManager = ({ shipment, refresh }: Props) => {
   const handleAddEvent = async () => {
     try {
       await API.post(`/events/${shipment._id}`, event);
-      alert('Timeline Updated!');
+      toast.success('Timeline Updated!');
       refresh(); // Refresh the list
     } catch (err) {
-      alert('Error updating timeline. Ensure you are logged in as admin.');
+      toast.error('Error updating timeline. Ensure you are logged in as admin.');
     }
   };
 

@@ -14,8 +14,8 @@ export const ShipmentTable = ({
   onDelete?: (s: Shipment) => void;
 }) => {
   return (
-    <div className="card overflow-hidden">
-      <table className="w-full text-sm">
+    <div className="card overflow-x-auto">
+      <table className="w-full min-w-[640px] text-sm">
         <thead className="bg-muted">
           <tr>
             <th className="p-3 text-left">Tracking</th>

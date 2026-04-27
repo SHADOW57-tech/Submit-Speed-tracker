@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserPlus, Mail, Lock, Loader2, ShieldAlert } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const UserRegister = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ const UserRegister = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      return alert("Passwords do not match!");
+      return toast.error("Passwords do not match!");
     }
 
     setLoading(true);
@@ -21,10 +22,10 @@ const UserRegister = () => {
       const res = await axios.post('http://localhost:5000/api/auth/register', { email, password, role: 'User' });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('userInfo', JSON.stringify(res.data));
-      alert("Account Created Successfully!");
+      toast.success("Account Created Successfully!");
       navigate('/');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Registration failed');
+      toast.error(err.response?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);
     }

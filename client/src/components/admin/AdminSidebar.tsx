@@ -3,16 +3,19 @@ import {
   Package,
   Settings,
   LogOut,
+  Users,
+  Bell,
 } from "lucide-react";
 
 interface AdminSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  isOwner?: boolean;
 }
 
-const AdminSidebar = ({ activeTab, onTabChange }: AdminSidebarProps) => {
+const AdminSidebar = ({ activeTab, onTabChange, isOwner = false }: AdminSidebarProps) => {
   return (
-    <div className="w-64 bg-card h-screen border-r border-border p-6 flex flex-col sticky top-0">
+    <div className="w-full md:w-64 bg-card md:h-screen border-b md:border-r border-border p-6 flex flex-col md:sticky md:top-0">
       <div className="mb-10">
         <h2 className="text-xl font-black text-primary tracking-tighter">
           SUBMIT <span className="text-foreground">SPEED</span>
@@ -35,6 +38,20 @@ const AdminSidebar = ({ activeTab, onTabChange }: AdminSidebarProps) => {
           active={activeTab === "Shipments"}
           onClick={() => onTabChange("Shipments")}
         />
+        <NavItem
+          icon={<Bell size={20} />}
+          label="Subscribers"
+          active={activeTab === "Subscribers"}
+          onClick={() => onTabChange("Subscribers")}
+        />
+        {isOwner && (
+          <NavItem
+            icon={<Users size={20} />}
+            label="Users"
+            active={activeTab === "Users"}
+            onClick={() => onTabChange("Users")}
+          />
+        )}
         <NavItem
           icon={<Settings size={20} />}
           label="Settings"

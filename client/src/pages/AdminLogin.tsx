@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -15,13 +16,14 @@ const AdminLogin = () => {
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
       
-      // Store token and user info in localStorage
+      // Store token and user info in localStorage so auth headers and protecting logic both work
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('userInfo', JSON.stringify(res.data));
       localStorage.setItem('adminInfo', JSON.stringify(res.data));
       
       navigate('/admin'); // Redirect to dashboard
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Login failed');
+      toast.error(err.response?.data?.message || 'Login failed');
     } finally {
       setLoading(false);
     }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserPlus, Mail, Lock, Loader2, ShieldAlert } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const AdminRegister = () => {
   const [email, setEmail] = useState('');
@@ -13,18 +14,19 @@ const AdminRegister = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      return alert("Passwords do not match!");
+      return toast.error("Passwords do not match!");
     }
 
     setLoading(true);
     try {
       const res = await axios.post('http://localhost:5000/api/auth/register', { email, password });
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('userInfo', JSON.stringify(res.data));
       localStorage.setItem('adminInfo', JSON.stringify(res.data));
-      alert("Admin Account Created Successfully!");
+      toast.success("Admin Account Created Successfully!");
       navigate('/admin');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Registration failed');
+      toast.error(err.response?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
