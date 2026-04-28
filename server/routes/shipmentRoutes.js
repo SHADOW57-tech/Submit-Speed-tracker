@@ -6,8 +6,7 @@ import {
   getAllShipments, 
   getAnalytics, 
   getShipmentByTracking, 
-  subscribeToShipment, 
-  deleteUpdate,
+  subscribeToShipment,
   getAllSubscriptions,
   dispatchTrackingInfo,
   deleteSubscription,
@@ -39,10 +38,7 @@ router.delete('/:id', protect, deleteShipment);
 // 8. Subscribe to shipment
 router.post('/:id/subscribe', subscribeToShipment);
 
-// 9. Delete a specific update from a shipment
-router.delete('/:shipmentId/updates/:updateId', protect, deleteUpdate);
-
-// 10. Delete a subscription
+// 9. Delete a subscription
 router.delete('/subscription', protect, deleteSubscription);
 
 export default router;

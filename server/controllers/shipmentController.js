@@ -214,38 +214,6 @@ export const dispatchTrackingInfo = async (req, res) => {
   }
 };
 
-// @desc    Delete a specific status update/log from a shipment
-export const deleteUpdate = async (req, res) => {
-  try {
-    const { shipmentId, updateId } = req.params;
-
-    // 1. Find the parent shipment
-    const shipment = await Shipment.findById(shipmentId);
-    if (!shipment) {
-      return res.status(404).json({ message: "Shipment not found" });
-    }
-
-    // 2. Pull the specific update from the 'updates' array
-    const originalLength = shipment.updates.length;
-    shipment.updates.pull({ _id: updateId });
-
-    // 3. Check if anything actually changed
-    if (shipment.updates.length === originalLength) {
-      return res
-        .status(404)
-        .json({
-          message:
-            "Update log not found (it may have been created before the schema fix)",
-        });
-    }
-
-    await shipment.save();
-    res.json({ message: "Update removed successfully" });
-  } catch (error) {
-    console.error("Delete Error:", error);
-    res.status(500).json({ message: error.message });
-  }
-};
 // controllers/shipmentController.js
 export const addUpdate = async (req, res) => {
   try {

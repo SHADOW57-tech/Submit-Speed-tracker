@@ -32,17 +32,19 @@ export const addUpdate = async (
     description: updateData.description,
   };
 
-  const res = await API.post(`/shipments/${shipmentId}/updates`, payload);
+  // Pass tracking number and encode for special characters
+  const res = await API.post(`/shipments/${encodeURIComponent(shipmentId)}/updates`, payload);
   return res.data;
 };
 
 export const getUpdates = async (shipmentId: string) => {
-  const res = await API.get(`/shipments/${shipmentId}/updates`);
+  // Pass tracking number and encode for special characters
+  const res = await API.get(`/shipments/${encodeURIComponent(shipmentId)}/updates`);
   return res.data;
 };
 
 export const deleteUpdate = async (shipmentId: string, updateId: string) => {
-  // Matches the backend: /api/shipments/:shipmentId/updates/:updateId
-  const res = await API.delete(`/shipments/${shipmentId}/updates/${updateId}`);
+  // Matches the backend: /api/shipments/:id/updates/:updateId (expects tracking number)
+  const res = await API.delete(`/shipments/${encodeURIComponent(shipmentId)}/updates/${updateId}`);
   return res.data;
 };

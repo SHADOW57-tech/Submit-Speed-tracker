@@ -18,12 +18,12 @@ const UpdateManager = ({ shipment, refresh }: Props) => {
   });
   const [loading, setLoading] = useState(false);
 
-  // FIX: Force the use of shipment._id (the 24-char hex string)
+  // Pass tracking number to API endpoints that expect it
   const loadUpdates = useCallback(async () => {
-    if (!shipment?._id) return;
+    if (!shipment?.trackingNumber) return;
     try {
-      // Always use the Database ID for API calls
-      const data = await getUpdates(shipment._id);
+      // Backend routes expect tracking number, not MongoDB _id
+      const data = await getUpdates(shipment.trackingNumber);
       const sorted = data.sort((a: ShipmentUpdate, b: ShipmentUpdate) => 
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       );
@@ -31,11 +31,11 @@ const UpdateManager = ({ shipment, refresh }: Props) => {
     } catch (err) {
       console.error('Failed to load updates:', err);
     }
-  }, [shipment._id]);
+  }, [shipment?.trackingNumber]);
 
   useEffect(() => {
-    if (shipment?._id) loadUpdates();
-  }, [shipment?._id, loadUpdates]);
+    if (shipment?.trackingNumber) loadUpdates();
+  }, [shipment?.trackingNumber, loadUpdates]);
 
   const handleAddUpdate = async () => {
     if (!updateData.location.trim()) {
@@ -43,8 +43,8 @@ const UpdateManager = ({ shipment, refresh }: Props) => {
       return;
     }
 
-    if (!shipment?._id) {
-      toast.error('Internal Error: Shipment ID missing');
+    if (!shipment?.trackingNumber) {
+      toast.error('Internal Error: Shipment tracking number missing');
       return;
     }
 
@@ -56,8 +56,8 @@ const UpdateManager = ({ shipment, refresh }: Props) => {
         description: updateData.description.trim() || "Status updated successfully"
       };
 
-      // FIX: Using shipment._id ensures the backend doesn't throw a Casting Error (400)
-      await addUpdate(shipment._id, payload);
+      // Pass tracking number to match backend route expectations
+      await addUpdate(shipment.trackingNumber, payload);
       
       setUpdateData({ status: 'In Transit', location: '', description: '' });
       await loadUpdates();
@@ -73,11 +73,11 @@ const UpdateManager = ({ shipment, refresh }: Props) => {
 
   const handleDeleteUpdate = async (updateId: string) => {
     if (!confirm('Permanently remove this event from history?')) return;
-    if (!shipment?._id) return;
+    if (!shipment?.trackingNumber) return;
     
     try {
-      // FIX: Again, using shipment._id for the parent reference
-      await deleteUpdate(shipment._id, updateId); 
+      // Pass tracking number to match backend route parameter expectations
+      await deleteUpdate(shipment.trackingNumber, updateId); 
       await loadUpdates();
       refresh();
       toast.success('Event deleted');

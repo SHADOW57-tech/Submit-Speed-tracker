@@ -102,10 +102,7 @@ const Header = () => {
         </div>
       </nav>
 
-      {/* CRITICAL FIX: This empty div pushes your page content down 
-          so the "TERMINAL" title doesn't hide behind the header.
-      */}
-      <div className="h-20 w-full"></div>
+    
     </>
   );
 };
